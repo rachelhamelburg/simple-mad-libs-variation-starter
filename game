@@ -1,0 +1,90 @@
+import nltk
+from nltk.tokenize import word_tokenize
+
+def get_user_input(label, pos):
+    return input(f'{label}: ')
+
+start = input("Welcome to Mad Libs Create Your Own Template! You need two players to play the game. Player 1 will create a story. Player 2 will be asked for words with different parts-of-speech, without being able to see the story that player 1 created. After player 2 completes all the prompts, player 1 will read the story aloud to player 2. When both players are ready, please enter Ready ")
+
+if start.lower() != 'ready':
+    input("Let's try that again. Type 'Ready' :)")
+
+player_1 = input(f'\nGreat! Player 1, enter your name. ')
+player_2 = input(f'\nNice to meet you, {player_1}. Player 2, how about you? ')
+print(f'\nHi, {player_2}. ')
+
+story = input(f'\n{player_1}, your turn! Time to write a short story. Make sure {player_2} cannot see your screen! If you would like to see some title names to inspire you, that is another option! "Write" or "Generate":')
+
+if story.lower() == 'generate':
+    print('\nNot a problem! Writing is hard. Check out these titles as a start:')
+    print(' ')
+    titles = [
+        'My Worst Nightmare',
+        'The Best Place on Earth',
+        'Guess What I Just Saw!',
+        "Where's my Wallet?",
+        "The Great Baking Disaster",
+        'The Time I Met my Favorite Celebrity',
+        'How to Make My Favorite Meal',
+        'If I Were President...',
+        'A Snowy Day in the Park',
+        'My Funniest Memory'
+    ]
+
+    for i, title in enumerate(titles, start=1):
+        print(f'{i}. {title}')
+
+    help_me = input("If you don't like any of them, type 'More'. Otherwise, 'Ready'.\n")
+    print('')
+    
+    if help_me.lower() == 'more':
+        more_titles = [
+            'A Day at the Beach',
+            'Lost in the Woods',
+            'The Mysterious Package',
+            'The Perfect Vacation',
+            'The Magical Adventure'
+        ]
+        
+        print("Here are a few more for you.")
+        for i, title in enumerate(more_titles, start=len(titles) + 1):
+            print(f'{i}. {title}')
+
+        madlib_title = input("Choose a title from the above list or enter your own title: ")
+        write = input("Great! I can't wait to see what you come up with!\n")
+    else:
+        madlib_title = input("Great! Let's choose a title. Either type in one from above or come up with your own, if you've been inspired: ")
+        write = input("Great! I can't wait to see what you come up with. Make sure only you can see the screen.\n")
+else:
+    madlib_title = input("Great! Let's choose a title: ")
+    write = input("Creative! Time to start writing. Make sure Player 2 can't see your screen.\n")
+
+words = word_tokenize(write)
+tagged = nltk.pos_tag(words)
+
+pos_list = ['NN', 'JJ', 'VBG', 'VBD', 'RB']
+
+# Large space to prevent player 2 from seeing the story player 1 has typed
+print('\n' * 20)
+
+print(f'{player_2}, your turn!')
+for i, (word, pos) in enumerate(tagged):
+    if pos in pos_list:
+        label = (
+            "Past-Tense Verb" if pos == 'VBD' else
+            "Noun" if pos == 'NN' else
+            "Adjective" if pos == 'JJ' else
+            "Verb-ING" if pos == 'VBG' else
+            pos
+        ) 
+        
+        user_input = get_user_input(label, pos)
+        tagged[i] = (user_input, pos)
+
+reconstructed_story = ' '.join([word for word, pos in tagged])
+
+see_madlib = input(f'Your masterpiece is completed! {player_1}, Ready to read? Type ready!\n')
+
+if see_madlib.lower() == 'ready':
+    print(f'Title: {madlib_title}, by {player_1} and {player_2}\n')
+    print(reconstructed_story)
