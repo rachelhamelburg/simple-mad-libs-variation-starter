@@ -4,7 +4,7 @@ from nltk.tokenize import word_tokenize
 def get_user_input(label, pos):
     return input(f'{label}: ')
 
-start = input("Welcome to Mad Libs Create Your Own Template! You need two players to play the game. Player 1 will create a story. Player 2 will be asked for words with different parts-of-speech, without being able to see the story that player 1 created. After player 2 completes all the prompts, player 1 will read the story aloud to player 2. When both players are ready, please enter Ready ")
+start = input("Welcome to Mad Libs: Create Your Own Template! You need two players to play the game. Player 1 will create a story. Player 2 will be asked for words with different parts-of-speech, without being able to see the story that player 1 created. After player 2 completes all the prompts, player 1 will read the story aloud to player 2. When both players are ready, please enter Ready ")
 
 if start.lower() != 'ready':
     input("Let's try that again. Type 'Ready' :)")
